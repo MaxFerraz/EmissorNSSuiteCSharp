@@ -1,0 +1,6 @@
+C:\Users\Max.Ferraz\Documents\GitHub\EmissorNSSuiteCSharp\EmissorNSSuiteCSharp\obj\Debug\EmissorNSSuiteCSharp.csprojAssemblyReference.cache
+C:\Users\Max.Ferraz\Documents\GitHub\EmissorNSSuiteCSharp\EmissorNSSuiteCSharp\obj\Debug\EmissorNSSuiteCSharp.Views.frmEmissaoNFCe.resources
+C:\Users\Max.Ferraz\Documents\GitHub\EmissorNSSuiteCSharp\EmissorNSSuiteCSharp\obj\Debug\EmissorNSSuiteCSharp.Views.frmEmissaoSAT.resources
+C:\Users\Max.Ferraz\Documents\GitHub\EmissorNSSuiteCSharp\EmissorNSSuiteCSharp\obj\Debug\EmissorNSSuiteCSharp.frmPrincipal.resources
+C:\Users\Max.Ferraz\Documents\GitHub\EmissorNSSuiteCSharp\EmissorNSSuiteCSharp\obj\Debug\EmissorNSSuiteCSharp.Views.frmProdutos.resources
+C:\Users\Max.Ferraz\Documents\GitHub\EmissorNSSuiteCSharp\EmissorNSSuiteCSharp\obj\Debug\EmissorNSSuiteCSharp.csproj.GenerateResource.cache
