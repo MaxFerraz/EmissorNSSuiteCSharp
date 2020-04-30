@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="II.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="COFINS.cs" />
     <Compile Include="ICMS.cs" />

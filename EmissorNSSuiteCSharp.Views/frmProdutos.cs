@@ -22,12 +22,13 @@ namespace EmissorNSSuiteCSharp.Views
     {
         private ProjectWithProducts project;
         private Form form;
-        private EnumsGenericController enums;
+        private EnumsGenericController enumsGenericController;
         
         public frmProdutos(ProjectWithProducts project, Form form)
         {
             this.form = form;
             this.project = project;
+            this.enumsGenericController = new EnumsGenericController();
             InitializeComponent();
         }
         private void frmProdutos_Load(object sender, EventArgs e)
@@ -37,12 +38,11 @@ namespace EmissorNSSuiteCSharp.Views
             {
                 case ProjectWithProducts.CFe:
                     {
+                        tpIIProd.Hide();
+                        tpIPIProd.Hide();
+
+                        //Informações Produtos
                         cbIndRegra.Enabled = true;
-                        cbIndRegra.Items.AddRange(new object[]
-                        {
-                            "T - Truncamento;",
-                            "A - Arrendondado."
-                        });
                         gbICMSST.Enabled = false;
                         cbmodBC.Enabled = false;
                         txtpRedBC.Enabled = false;
@@ -50,6 +50,8 @@ namespace EmissorNSSuiteCSharp.Views
                         txtpCredSN.Enabled = false;
                         txtvCredICMSSN.Enabled = false;
                         txtmotDeson.Enabled = false;
+
+                        //Informações ICMS RN
                         cbICMSCST.Items.AddRange(new object[]
                         {
                             ICMSEnum.CST.TributadaIntegralmente.GetDescription(),
@@ -59,6 +61,8 @@ namespace EmissorNSSuiteCSharp.Views
                             ICMSEnum.CST.CobradoST.GetDescription(),
                             ICMSEnum.CST.Outros.GetDescription()
                         });
+
+                        //Informações ICMS SN
                         cbICMSCSOSN.Items.AddRange(new object[]
                         {
                             ICMSEnum.CSON.SNnCred.GetDescription(),
@@ -67,7 +71,7 @@ namespace EmissorNSSuiteCSharp.Views
                             ICMSEnum.CSON.CobradoST.GetDescription(),
                             ICMSEnum.CSON.Outros.GetDescription()
                         });
-
+                        
                         break;
                     }
                 case ProjectWithProducts.NFCe:
@@ -98,7 +102,7 @@ namespace EmissorNSSuiteCSharp.Views
 
                 var product = await ValidateProductAsync();
 
-               // Dtgv_ProdsInDB.DataSource = await Task.Run(() => product.Register());
+                Dtgv_ProdsInDB.DataSource = await Task.Run(() => product.Register());
 
                 MessageBox.Show($"Cadastro do Produto '{txtDescricao}' feito com sucesso!", "Sucesso ao Cadastrar Produto", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
@@ -137,32 +141,32 @@ namespace EmissorNSSuiteCSharp.Views
 
                 var p = new Product()
                 {
-                    ProductCode = txtCodigo.Text,
-                    Description = txtDescricao.Text,
+                    CProd = txtCodigo.Text,
+                    XProd = txtDescricao.Text,
                     Quantity = int.Parse(txtQuantidade.Text),
                     NCM = txtNCM.Text,
                     CFOP = txtCFOP.Text,
                     CEST = txtCEST.Text,
-                    BusinessUnit = txtUndMedida.Text,
-                    UnitaryValue = double.Parse(txtCustoUnit.Text),
-                    Origination = (int)enums.GetEnumByDescription<ICMSEnum.CST>(cbICMSCST.Text),
-                    ApproximateAmountTaxas = string.IsNullOrEmpty(txtValorAprox.Text) ? null : txtValorAprox.Text
+                    UCom = txtUndMedida.Text,
+                    VUnCom = double.Parse(txtCustoUnit.Text),                  
+                    VTotTrib = string.IsNullOrEmpty(txtValorAprox.Text) ? null : txtValorAprox.Text
                 };
 
                 switch (project)
                 {
                     case ProjectWithProducts.CFe:
                         {
-                            p.BarCode = txtCodigoBarras.Text;
+                            p.CEAN = txtCodigoBarras.Text;
                             if (string.IsNullOrEmpty(cbIndRegra.Text))
                                 throw new RequiredFieldException(Lbl_IndRegra.Text);
-                            p.CalculationRule = cbIndRegra.Text;
+                            p.IndRegra = cbIndRegra.Text;
                             break;
                         }
                     case ProjectWithProducts.NFCe:
                     case ProjectWithProducts.NFe:
                         {
-                            p.BarCode = string.IsNullOrEmpty(txtCodigoBarras.Text) ? "SEM GTIN" : txtCodigoBarras.Text;
+                            p.CEAN = string.IsNullOrEmpty(txtCodigoBarras.Text) ? "SEM GTIN" : txtCodigoBarras.Text;
+                            p.CEANTrib = p.CEAN;
                             break;
                         }
                 }
@@ -209,15 +213,6 @@ namespace EmissorNSSuiteCSharp.Views
             }
             return null;
         }
-        private Task<II> ValidadeII()
-        {
-            switch (project)
-            {
-                case ProjectWithProducts.CFe:
-                    return null;
-            }
-            return null;
-        }
         private async Task<Product> ValidateProductAsync()
         {
             var PISTask = ValidadePIS();
@@ -226,9 +221,8 @@ namespace EmissorNSSuiteCSharp.Views
             var ICMSTask = ValidadeICMS();
             var ISSQNTask = ValidadeISSQN();
             var ProductTask = ValidadeInfProduct();
-            var IITask = ValidadeII();
 
-            await Task.WhenAll(ProductTask, ICMSTask, PISTask, COFINSTask, IPITask, ISSQNTask, IITask);
+            await Task.WhenAll(ProductTask, ICMSTask, PISTask, COFINSTask, IPITask, ISSQNTask);
 
             var product = await ProductTask;
             product.PIS = await PISTask;

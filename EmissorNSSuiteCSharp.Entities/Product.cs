@@ -9,17 +9,17 @@ namespace EmissorNSSuiteCSharp.Entities
         public COFINS COFINS { get; set; }
         public IPI IPI { get; set; }
         public ISSQN ISSQN { get; set; }
-        public string ProductCode { get; set; }
-        public string BarCode { get; set; }
-        public string Description { get; set; }
+        public string CProd { get; set; }
+        public string CEAN { get; set; }
+        public string CEANTrib { get; set; }
+        public string XProd { get; set; }
         public string CFOP { get; set; }
         public string NCM { get; set; }
         public string CEST { get; set; }
-        public string ApproximateAmountTaxas { get; set; }
-        public string CalculationRule { get; set; } //SAT
-        public string BusinessUnit { get; set; }
-        public double UnitaryValue { get; set; }
+        public string VTotTrib { get; set; }
+        public string IndRegra { get; set; }
+        public string UCom { get; set; }
+        public double VUnCom { get; set; }
         public int Quantity { get; set; }
-        public int Origination { get; set; }
     }
 }
